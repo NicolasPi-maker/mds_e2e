@@ -18,14 +18,18 @@ test('get started link', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
 });
 
-test('counter is at 0', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
-  await expect(page.locator('button').first().textContent()).resolves.toBe('count is 0');
-});
+test.describe('counter', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('http://localhost:5173/');
+  });
 
-test('counter is at 2 after 2 clicks', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
-  await page.getByRole('button', { name: 'count is' }).click();
-  await page.getByRole('button', { name: 'count is' }).click();
-  await expect(page.getByRole('button', { name: 'count is 2' })).toBeVisible();
+  test('counter is at 0', async ({ page }) => {
+    await expect(page.locator('button').first().textContent()).resolves.toBe('count is 0');
+  });
+
+  test('counter is at 2 after 2 clicks', async ({ page }) => {
+    await page.getByRole('button', { name: 'count is' }).click();
+    await page.getByRole('button', { name: 'count is' }).click();
+    await expect(page.getByRole('button', { name: 'count is 2' })).toBeVisible();
+  });
 });
